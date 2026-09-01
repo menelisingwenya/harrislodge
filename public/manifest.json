@@ -1,0 +1,16 @@
+{
+  "name": "Harris Lodge & Luxury Stay",
+  "short_name": "Harris Lodge",
+  "description": "Experience exceptional luxury, tranquil gardens, and authentic Zimbabwean hospitality across our premier destinations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#002921",
+  "theme_color": "#006A56",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
