@@ -4,13 +4,13 @@
   "description": "Experience exceptional luxury, tranquil gardens, and authentic Zimbabwean hospitality across our premier destinations.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#002921",
-  "theme_color": "#006A56",
+  "background_color": "#00382E",
+  "theme_color": "#004D3F",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/images/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
     }
   ]
 }

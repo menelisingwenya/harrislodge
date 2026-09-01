@@ -1176,13 +1176,10 @@ function HarrisLodgeContent() {
                       >
                         <div className="hotel-logo-box">
                           <img
-                            src="/images/harris-lodge-logo-mark.png"
+                            src="/images/logo.png"
                             alt={hotel.fullName}
-                            onError={(e) => {
-                              const target = e.currentTarget as HTMLImageElement;
-                              target.onerror = null;
-                              target.src = '/images/logo.png';
-                            }}
+                            loading="lazy"
+                            decoding="async"
                           />
                         </div>
                         <div className="brand-main">HARRIS</div>
@@ -1342,13 +1339,10 @@ function HarrisLodgeContent() {
                       >
                         <div className="hotel-logo-box">
                           <img
-                            src="/images/harris-lodge-logo-mark.png"
+                            src="/images/logo.png"
                             alt={hotel.fullName}
-                            onError={(e) => {
-                              const target = e.currentTarget as HTMLImageElement;
-                              target.onerror = null;
-                              target.src = '/images/logo.png';
-                            }}
+                            loading="lazy"
+                            decoding="async"
                           />
                         </div>
                         <div className="brand-main">HARRIS</div>
@@ -1443,13 +1437,10 @@ function HarrisLodgeContent() {
                         >
                           <div className="hotel-logo-box">
                             <img
-                              src="/images/harris-lodge-logo-mark.png"
+                              src="/images/logo.png"
                               alt={hotel.fullName}
-                              onError={(e) => {
-                                const target = e.currentTarget as HTMLImageElement;
-                                target.onerror = null;
-                                target.src = '/images/logo.png';
-                              }}
+                              loading="lazy"
+                              decoding="async"
                             />
                           </div>
                           <div className="brand-main">HARRIS</div>
