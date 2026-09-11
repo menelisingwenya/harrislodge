@@ -8,6 +8,7 @@ import { RoomListing } from '@/components/rooms/RoomListing';
 import { BranchDetail } from '@/components/branches/BranchDetail';
 import { ConferenceListing } from '@/components/conference/ConferenceListing';
 import { LuxuryBookingModal } from '@/components/bookings/LuxuryBookingModal';
+import { WhatsAppAssist } from '@/components/common/WhatsAppAssist';
 import type { Room } from '@/types/database';
 import { Icon } from '@iconify/react';
 import styled from 'styled-components';
@@ -636,7 +637,6 @@ const HOTEL_SHOWCASE_BRANCHES = [
   { id: 'branch-london', fullName: 'Harris London', subName: 'London', color: '#8A5214', location: 'London View' },           // English Ochre
   { id: 'branch-villa', fullName: 'Harris Villa', subName: 'Villa', color: '#A3661C', location: 'Villa Sanctuary' },             // Tuscan Bronze
   { id: 'branch-executive', fullName: 'Harris Executive', subName: 'Executive', color: '#00594B', location: 'Diplomatic Sector' }, // Deep Teal
-  { id: 'branch-suburbs', fullName: 'Harris Suburbs', subName: 'Suburbs', color: '#486581', location: 'Suburbs Retreat' },       // Slate Indigo
 ];
 
 const GoogleReviewBadge = styled.a`
@@ -1106,14 +1106,6 @@ function HarrisLodgeContent() {
                 <div className="services-grid">
                   <ServiceItem>
                     <div className="service-icon">
-                      <Icon icon="mdi:car-key" width={32} height={32} />
-                    </div>
-                    <h4>Car Rental</h4>
-                    <p>Airport pickups, private chauffeur services, and executive vehicles on demand.</p>
-                  </ServiceItem>
-
-                  <ServiceItem>
-                    <div className="service-icon">
                       <Icon icon="mdi:wifi" width={32} height={32} />
                     </div>
                     <h4>Free High-Speed WiFi</h4>
@@ -1285,11 +1277,6 @@ function HarrisLodgeContent() {
                   Everything you need for a restorative holiday, executive retreat, or memorable conference.
                 </div>
                 <div className="services-grid">
-                  <ServiceItem>
-                    <div className="service-icon"><Icon icon="mdi:car-key" width={32} height={32} /></div>
-                    <h4>Car Rental &amp; Transfers</h4>
-                    <p>Dedicated airport pick-up and private tour chauffeuring.</p>
-                  </ServiceItem>
                   <ServiceItem>
                     <div className="service-icon"><Icon icon="mdi:wifi" width={32} height={32} /></div>
                     <h4>Fiber High-Speed WiFi</h4>
@@ -2231,6 +2218,9 @@ function HarrisLodgeContent() {
         initialBranchId={currentBranch?.id}
         preselectedRoom={selectedRoomForBooking}
       />
+
+      {/* 5. Floating WhatsApp Concierge Assistant */}
+      <WhatsAppAssist />
     </div>
   );
 }

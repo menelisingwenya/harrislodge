@@ -606,8 +606,8 @@ export function Header({
           <TopBarLeft>
             <Icon icon="mdi:phone" width={14} height={14} style={{ color: '#D97E26' }} />
             <span>Need help? Call us now : </span>
-            <a href={`tel:${currentBranch?.contact_phone ?? BRAND_CONTACT.centralPhone}`}>
-              {currentBranch?.contact_phone ?? BRAND_CONTACT.centralPhone}
+            <a href="tel:+263772667410">
+              +263 77 266 7410
             </a>
           </TopBarLeft>
 

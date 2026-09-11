@@ -1,12 +1,12 @@
 import type { Branch, Room, RoomBooking, ConferenceBooking, Profile } from '@/types/database';
 
 const STORAGE_KEYS = {
-  BRANCHES: 'harris_lodge_branches_v2',
-  ROOMS: 'harris_lodge_rooms_v2',
-  ROOM_BOOKINGS: 'harris_lodge_room_bookings_v2',
-  CONFERENCE_BOOKINGS: 'harris_lodge_conf_bookings_v2',
-  PROFILES: 'harris_lodge_profiles_v2',
-  CURRENT_USER: 'harris_lodge_auth_user_v2',
+  BRANCHES: 'harris_lodge_branches_v4',
+  ROOMS: 'harris_lodge_rooms_v4',
+  ROOM_BOOKINGS: 'harris_lodge_room_bookings_v4',
+  CONFERENCE_BOOKINGS: 'harris_lodge_conf_bookings_v4',
+  PROFILES: 'harris_lodge_profiles_v4',
+  CURRENT_USER: 'harris_lodge_auth_user_v4',
 };
 
 // 12 Official Harris Branches
@@ -16,7 +16,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Northend',
     location: 'Northend District',
     address: '12 Northend Blvd',
-    contact_phone: '+263 77 111 0001',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 8000,
     created_at: new Date().toISOString(),
@@ -27,7 +27,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Sunone',
     location: 'Sunone Plaza',
     address: '24 Sunone Way',
-    contact_phone: '+263 77 111 0002',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 8000,
     created_at: new Date().toISOString(),
@@ -38,7 +38,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Prime',
     location: 'Prime Commercial Centre',
     address: '88 Prime Heights',
-    contact_phone: '+263 77 111 0003',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 10000,
     created_at: new Date().toISOString(),
@@ -49,7 +49,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Zim Harris',
     location: 'Central Gateway',
     address: '101 Zim Harris Avenue',
-    contact_phone: '+263 77 111 0004',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 8500,
     created_at: new Date().toISOString(),
@@ -60,7 +60,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Qatha',
     location: 'Qatha Precinct',
     address: '55 Qatha Lane',
-    contact_phone: '+263 77 111 0005',
+    contact_phone: '+263 77 266 7410',
     has_conference: false,
     conference_rate_per_hour: 0,
     created_at: new Date().toISOString(),
@@ -71,7 +71,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Clark',
     location: 'Clark Heritage Quarter',
     address: '32 Clark Close',
-    contact_phone: '+263 77 111 0006',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 9000,
     created_at: new Date().toISOString(),
@@ -82,7 +82,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Romney Park',
     location: 'Romney Park Parkland',
     address: '77 Romney Park Drive',
-    contact_phone: '+263 77 111 0007',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 9500,
     created_at: new Date().toISOString(),
@@ -93,7 +93,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Silver Sands',
     location: 'Silver Sands Haven',
     address: '14 Silver Sands Bay',
-    contact_phone: '+263 77 111 0008',
+    contact_phone: '+263 77 266 7410',
     has_conference: false,
     conference_rate_per_hour: 0,
     created_at: new Date().toISOString(),
@@ -104,7 +104,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris London',
     location: 'London View',
     address: '19 London Road',
-    contact_phone: '+263 77 111 0009',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 11000,
     created_at: new Date().toISOString(),
@@ -115,7 +115,7 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Villa',
     location: 'Villa Sanctuary',
     address: '60 Villa Terraces',
-    contact_phone: '+263 77 111 0010',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 12000,
     created_at: new Date().toISOString(),
@@ -126,20 +126,9 @@ export const SEED_BRANCHES: Branch[] = [
     name: 'Harris Executive',
     location: 'Diplomatic & Financial Sector',
     address: '250 Executive Towers',
-    contact_phone: '+263 77 111 0011',
+    contact_phone: '+263 77 266 7410',
     has_conference: true,
     conference_rate_per_hour: 15000,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 'branch-suburbs',
-    name: 'Harris Suburbs',
-    location: 'Suburbs Retreat',
-    address: '42 Suburbs Garden Circle',
-    contact_phone: '+263 77 111 0012',
-    has_conference: true,
-    conference_rate_per_hour: 8000,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   },
@@ -315,14 +304,20 @@ function setToStorage<T>(key: string, value: T): void {
 
 export const StorageStore = {
   getBranches(): Branch[] {
-    return getFromStorage<Branch[]>(STORAGE_KEYS.BRANCHES, SEED_BRANCHES);
+    const list = getFromStorage<Branch[]>(STORAGE_KEYS.BRANCHES, SEED_BRANCHES);
+    return list
+      .filter((b) => b.id !== 'branch-suburbs')
+      .map((b) => ({
+        ...b,
+        contact_phone: !b.contact_phone || b.contact_phone.includes('111 00') ? '+263 77 266 7410' : b.contact_phone,
+      }));
   },
   saveBranches(branches: Branch[]): void {
     setToStorage(STORAGE_KEYS.BRANCHES, branches);
   },
 
   getRooms(): Room[] {
-    return getFromStorage<Room[]>(STORAGE_KEYS.ROOMS, SEED_ROOMS);
+    return getFromStorage<Room[]>(STORAGE_KEYS.ROOMS, SEED_ROOMS).filter((r) => r.branch_id !== 'branch-suburbs');
   },
   saveRooms(rooms: Room[]): void {
     setToStorage(STORAGE_KEYS.ROOMS, rooms);

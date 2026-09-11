@@ -318,33 +318,6 @@ export const BRANCH_EXTENDED_DATA: Record<string, BranchExtendedInfo> = {
       { url: '/images/home/conference_hall.jpg', title: 'Diplomatic Summit Hall', category: 'conference' },
     ],
   },
-  'branch-suburbs': {
-    id: 'branch-suburbs',
-    tagline: 'Quiet neighborhood haven with bird-filled trees and restful veranda gardens',
-    description:
-      'Situated in the calm Suburbs district, this lodge offers a home-away-from-home feeling. Surrounded by jacarandas and birdsong, it provides a quiet sanctuary for long holidays, research work, or executive recuperation.',
-    rating: 4.8,
-    reviewsCount: 37,
-    heroImage: '/images/home/services_bedroom.jpg',
-    features: [
-      'Quiet Residential Setting with Jacarandas',
-      'Bird-Filled Garden Lawns & Patios',
-      '24/7 Power Backup & Hot Water',
-      'High-Speed Wi-Fi in All Suites',
-      'Cozy Fireside Reading Lounge',
-      'Secure Onsite Gated Parking',
-      '24/7 Security Patrol & CCTV',
-      'Kitchenette & Long-Stay Options',
-    ],
-    gallery: [
-      { url: '/images/home/services_bedroom.jpg', title: 'Suburbs Garden Suite', category: 'rooms' },
-      { url: '/images/home/welcome_beach.jpg', title: 'Garden Patio & Veranda', category: 'gardens' },
-      { url: '/images/home/room_standard.jpg', title: 'Standard Quiet Bedroom', category: 'rooms' },
-      { url: '/images/home/room_deluxe.jpg', title: 'Deluxe King Suite', category: 'rooms' },
-      { url: '/images/home/welcome_villa.jpg', title: 'Suburbs Lodge Compound', category: 'exterior' },
-      { url: '/images/home/hero_pool.jpg', title: 'Garden Swimming Pool', category: 'amenities' },
-    ],
-  },
 };
 
 /* ============================================================
@@ -890,58 +863,7 @@ const MapSection = styled.div`
   }
 `;
 
-/* ── 6. All 12 Branches Grid Switcher ── */
-const AllBranchesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
-`;
 
-const BranchPillCard = styled.div<{ $active: boolean }>`
-  background: ${(p) => (p.$active ? '#00382E' : '#FFFFFF')};
-  color: ${(p) => (p.$active ? '#FFFFFF' : '#00382E')};
-  border: 1.5px solid ${(p) => (p.$active ? '#D97E26' : 'rgba(0, 106, 86, 0.15)')};
-  border-radius: 8px;
-  padding: 1.25rem;
-  cursor: pointer;
-  transition: all 200ms ease;
-  box-shadow: ${(p) => (p.$active ? '0 8px 24px rgba(0, 56, 46, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.03)')};
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: #D97E26;
-    box-shadow: 0 8px 20px rgba(217, 126, 38, 0.2);
-  }
-
-  .pill-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
-    font-weight: 700;
-    font-size: 1.05rem;
-    font-family: 'Playfair Display', Georgia, serif;
-    color: ${(p) => (p.$active ? '#FFAE58' : '#00382E')};
-  }
-
-  .pill-location {
-    font-size: 0.8rem;
-    color: ${(p) => (p.$active ? 'rgba(255, 255, 255, 0.8)' : '#64748B')};
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .pill-action {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #D97E26;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-`;
 
 /* ============================================================
    MAIN BRANCH DETAIL COMPONENT
@@ -1311,46 +1233,6 @@ export function BranchDetail({
             />
           </div>
         </MapSection>
-
-        {/* 6. Switch & Explore All 12 Branches */}
-        <div>
-          <SectionHeading>
-            <span className="eyebrow">
-              <Icon icon="mdi:map-marker-multiple" width={16} height={16} />
-              DISCOVER OUR BULAWAYO COLLECTION
-            </span>
-            <h2>Explore Our Other 11 Branches</h2>
-            <p>
-              Harris Lodge features 12 prime destinations across Bulawayo. Click on any location to view photos, available suites, and book instantly.
-            </p>
-          </SectionHeading>
-
-          <AllBranchesGrid>
-            {branches.map((b) => {
-              const isCurrent = b.id === activeBranch.id;
-              return (
-                <BranchPillCard
-                  key={b.id}
-                  $active={isCurrent}
-                  onClick={() => handleSelectBranch(b.id)}
-                  title={`View details for ${b.name}`}
-                >
-                  <div className="pill-header">
-                    <Icon icon="mdi:map-marker" width={18} height={18} style={{ color: isCurrent ? '#D97E26' : '#006A56' }} />
-                    <span>{b.name}</span>
-                  </div>
-                  <div className="pill-location">
-                    <Icon icon="mdi:map-marker-radius-outline" width={13} height={13} />
-                    <span>{b.location}</span>
-                  </div>
-                  <div className="pill-action">
-                    <span>{isCurrent ? 'Currently Viewing' : 'View Photos & Book'} &rarr;</span>
-                  </div>
-                </BranchPillCard>
-              );
-            })}
-          </AllBranchesGrid>
-        </div>
       </ContentWrapper>
     </PageContainer>
   );

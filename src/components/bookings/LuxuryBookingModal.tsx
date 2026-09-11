@@ -1260,7 +1260,7 @@ export function LuxuryBookingModal({
 
               <div className="actions-row">
                 <a
-                  href={`https://wa.me/263772228899?text=${encodeURIComponent(
+                  href={`https://wa.me/263775477464?text=${encodeURIComponent(
                     `Hello Harris Lodge, I have confirmed reservation ${bookingCode} for ${activeRoom.name} at ${activeBranch?.name} from ${checkIn} to ${checkOut}.`
                   )}`}
                   target="_blank"

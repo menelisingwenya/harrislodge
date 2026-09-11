@@ -5,7 +5,9 @@ export const SOCIAL_LINKS = {
 } as const;
 
 export const BRAND_CONTACT = {
-  centralPhone: '+263 77 123 4567',
+  centralPhone: '+263 77 266 7410',
+  whatsappNumber: '+263 77547 7464',
+  whatsappUrl: 'https://wa.me/263775477464',
   generalEmail: 'harrislodges1@gmail.com',
   enquiriesEmail: 'harrislodges1@gmail.com',
   newsletterEmail: 'harrislodges1@gmail.com',

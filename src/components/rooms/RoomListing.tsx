@@ -360,24 +360,6 @@ const ImageColumn = styled.div<{ $order?: number }>`
   ${RoomRow}:hover & img {
     transform: scale(1.04);
   }
-
-  .branch-tag {
-    position: absolute;
-    top: 1.25rem;
-    left: 1.25rem;
-    background: rgba(0, 41, 33, 0.82);
-    backdrop-filter: blur(6px);
-    color: #FFFFFF;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.35rem 0.8rem;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
 `;
 
 const ContentColumn = styled.div<{ $order?: number }>`
@@ -1060,10 +1042,6 @@ export function RoomListing({ onBookRoom, onBookConference, onNavigate }: RoomLi
               {/* Image Column */}
               <ImageColumn $order={isEven ? 0 : 1}>
                 <img src={item.image} alt={item.title} loading="lazy" />
-                <div className="branch-tag">
-                  <Icon icon="mdi:map-marker" width={12} height={12} style={{ color: '#D97E26' }} />
-                  {item.branchName}
-                </div>
                 <div
                   style={{
                     position: 'absolute',
