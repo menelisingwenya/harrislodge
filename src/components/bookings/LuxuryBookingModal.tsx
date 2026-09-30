@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { useBranch } from '@/context/BranchContext';
+import { BRAND_CONTACT } from '@/lib/brand';
 import type { Room } from '@/types/database';
 
 interface LuxuryBookingModalProps {
@@ -848,17 +849,58 @@ export function LuxuryBookingModal({
     return branches.find((b) => b.id === selectedBranchId) || branches[0];
   }, [branches, selectedBranchId]);
 
-  const roomSubtotal = activeRoom.pricePerNight * nights;
-  const breakfastTotal = addBreakfast ? 10 * adults * nights : 0;
-  const totalAmount = roomSubtotal + breakfastTotal;
+  const generateMailtoUrl = (code = bookingCode) => {
+    const refCode = code || `HL-${Math.floor(10000 + Math.random() * 90000)}`;
+    const subject = `Booking Reservation: ${activeRoom.name} at ${activeBranch?.name} [Ref: ${refCode}]`;
+    const body = `Dear Harris Lodge Reservations Team,
+
+I would like to book a stay at Harris Lodge with the following reservation details:
+
+========================================
+RESERVATION DETAILS
+========================================
+• Booking Reference: ${refCode}
+• Branch Location: ${activeBranch?.name} (${activeBranch?.location || 'Bulawayo, Zimbabwe'})
+• Room / Suite: ${activeRoom.name}
+• Check-In Date: ${checkIn}
+• Check-Out Date: ${checkOut}
+• Duration: ${nights} ${nights === 1 ? 'Night' : 'Nights'}
+• Guests: ${adults} Adult(s)${childrenCount > 0 ? `, ${childrenCount} Child(ren)` : ''}
+• Breakfast Option: ${addBreakfast ? 'Gourmet Artisan Breakfast Included' : 'Room Only'}
+• Special Requests: ${specialRequests.trim() || 'None'}
+
+========================================
+GUEST CONTACT INFORMATION
+========================================
+• Full Name: ${guestName.trim()}
+• Email Address: ${guestEmail.trim()}
+• Phone / WhatsApp: ${guestPhone.trim()}
+
+Please confirm this booking reservation via reply email.
+
+Kind regards,
+${guestName.trim()}`;
+
+    return `mailto:${BRAND_CONTACT.generalEmail}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+  };
 
   const handleConfirmBooking = () => {
-    if (!guestName || !guestEmail || !guestPhone) {
-      alert('Please fill in your name, email, and phone number to secure your booking.');
+    if (!guestName.trim() || !guestEmail.trim() || !guestPhone.trim()) {
+      alert('Please fill in your name, email, and phone number to prepare your email booking request.');
       return;
     }
-    const randCode = `HL-28423-${Math.floor(1000 + Math.random() * 9000)}`;
+    const randCode = `HL-${Math.floor(10000 + Math.random() * 90000)}`;
     setBookingCode(randCode);
+
+    const mailto = generateMailtoUrl(randCode);
+    try {
+      window.location.href = mailto;
+    } catch (err) {
+      console.log('Error opening mail client:', err);
+    }
+
     setStep(3);
   };
 
@@ -872,14 +914,14 @@ export function LuxuryBookingModal({
             <img src="/images/logo.png" alt="Harris Lodges Logo" />
             <div className="brand-text">
               <h2>Harris Lodges &amp; Luxury Stays</h2>
-              <span>Online Reservation &amp; Instant Live Availability</span>
+              <span>Online Reservation • Direct Email Booking</span>
             </div>
           </div>
 
           <div className="header-actions">
             <div className="property-pill">
-              <Icon icon="mdi:shield-check" width={15} height={15} />
-              Property #28423 • Best Rate Direct
+              <Icon icon="mdi:email-check" width={15} height={15} />
+              Email Booking: {BRAND_CONTACT.generalEmail}
             </div>
             <button className="btn-close" onClick={onClose} title="Close">
               <Icon icon="mdi:close" width={20} height={20} />
@@ -907,14 +949,14 @@ export function LuxuryBookingModal({
             }}
           >
             <span className="step-num">2</span>
-            <span>2. Guest Details &amp; Options</span>
+            <span>2. Guest Details</span>
           </StepItem>
 
           <Icon icon="mdi:chevron-right" width={18} height={18} style={{ color: 'rgba(255,255,255,0.4)' }} />
 
           <StepItem $active={step === 3} $completed={step === 3}>
             <span className="step-num">3</span>
-            <span>3. Instant Confirmation</span>
+            <span>3. Send Booking Email</span>
           </StepItem>
         </StepsNav>
 
@@ -987,7 +1029,7 @@ export function LuxuryBookingModal({
                     Available Suites at {activeBranch?.name}
                   </h3>
                   <span style={{ fontSize: '0.82rem', color: '#059669', fontWeight: 700 }}>
-                    ● Real-Time Availability Verified
+                    ● Email Booking Available
                   </span>
                 </div>
 
@@ -1022,11 +1064,6 @@ export function LuxuryBookingModal({
                         </div>
 
                         <div className="action-col">
-                          <div className="price-wrap">
-                            <span className="amount">${room.pricePerNight}</span>
-                            <span className="unit">USD / night</span>
-                          </div>
-
                           <button
                             className="btn-select"
                             onClick={() => setSelectedRoomId(room.id)}
@@ -1072,26 +1109,29 @@ export function LuxuryBookingModal({
                   <span>{activeRoom.name}</span>
                 </div>
                 <div className="summary-line">
-                  <span>Rate per night:</span>
-                  <span>${activeRoom.pricePerNight}</span>
+                  <span>Booking Mode:</span>
+                  <span style={{ fontWeight: 600, color: '#006A56' }}>Direct via Email</span>
                 </div>
 
-                <div className="summary-line total">
-                  <span>Total Amount:</span>
-                  <span>${totalAmount} USD</span>
+                <div style={{ marginTop: '1rem', background: '#F0FDF4', padding: '0.85rem', borderRadius: '6px', border: '1px solid #BBF7D0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#166534', fontSize: '0.82rem', fontWeight: 600 }}>
+                    <Icon icon="mdi:email-outline" width={18} height={18} style={{ color: '#006A56', flexShrink: 0 }} />
+                    <span>No online payment required. Book directly via lodge email.</span>
+                  </div>
                 </div>
 
                 <button
                   className="btn-continue"
                   onClick={() => setStep(2)}
+                  style={{ marginTop: '1.1rem' }}
                 >
-                  Continue to Guest Info
+                  Continue to Book on Email
                   <Icon icon="mdi:arrow-right" width={18} height={18} />
                 </button>
 
                 <div className="guarantee-note">
-                  <Icon icon="mdi:lock" width={14} height={14} />
-                  Best Direct Price Guaranteed
+                  <Icon icon="mdi:email-check-outline" width={14} height={14} />
+                  Official Email: {BRAND_CONTACT.generalEmail}
                 </div>
               </SidebarSummary>
             </>
@@ -1101,7 +1141,7 @@ export function LuxuryBookingModal({
             <>
               <FormSection>
                 <h3>Guest Contact Information</h3>
-                <p>Please provide your details for reservation verification and automated check-in confirmation.</p>
+                <p>Please enter your contact details to prepare your direct email booking request for {activeBranch?.name}.</p>
 
                 <div className="form-grid">
                   <div>
@@ -1152,7 +1192,7 @@ export function LuxuryBookingModal({
                         onChange={(e) => setAddBreakfast(e.target.checked)}
                         style={{ width: 'auto' }}
                       />
-                      Add Gourmet Artisan Breakfast (+ $10 per guest / night)
+                      Add Gourmet Artisan Breakfast to Reservation
                     </label>
                   </div>
 
@@ -1160,7 +1200,7 @@ export function LuxuryBookingModal({
                     <label className="input-label">Special Requests &amp; Notes</label>
                     <textarea
                       rows={3}
-                      placeholder="Airport transfer request, dietary requirements, quiet room preference..."
+                      placeholder="Airport transfer request, quiet room preference, dietary requirements..."
                       value={specialRequests}
                       onChange={(e) => setSpecialRequests(e.target.value)}
                     />
@@ -1171,6 +1211,10 @@ export function LuxuryBookingModal({
               <SidebarSummary>
                 <h3>Booking Overview</h3>
                 <div className="summary-line">
+                  <span>Branch:</span>
+                  <span style={{ fontWeight: 700, color: '#006A56' }}>{activeBranch?.name}</span>
+                </div>
+                <div className="summary-line">
                   <span>Room:</span>
                   <span style={{ fontWeight: 700 }}>{activeRoom.name}</span>
                 </div>
@@ -1179,30 +1223,28 @@ export function LuxuryBookingModal({
                   <span>{checkIn} &rarr; {checkOut}</span>
                 </div>
                 <div className="summary-line">
-                  <span>Stay:</span>
-                  <span>{nights} Nights ({adults} Guests)</span>
+                  <span>Duration:</span>
+                  <span>{nights} {nights === 1 ? 'Night' : 'Nights'} ({adults} Guests)</span>
                 </div>
                 <div className="summary-line">
-                  <span>Room Total:</span>
-                  <span>${roomSubtotal}</span>
+                  <span>Breakfast:</span>
+                  <span>{addBreakfast ? 'Included' : 'Room Only'}</span>
                 </div>
-                {addBreakfast && (
-                  <div className="summary-line">
-                    <span>Breakfast Total:</span>
-                    <span>+${breakfastTotal}</span>
+
+                <div style={{ marginTop: '0.85rem', background: '#F0FDF4', padding: '0.85rem', borderRadius: '6px', border: '1px solid #BBF7D0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#166534', fontSize: '0.82rem', fontWeight: 600 }}>
+                    <Icon icon="mdi:email-fast" width={18} height={18} style={{ color: '#006A56', flexShrink: 0 }} />
+                    <span>Booking is emailed to {BRAND_CONTACT.generalEmail} with zero online payment.</span>
                   </div>
-                )}
-                <div className="summary-line total">
-                  <span>Grand Total:</span>
-                  <span>${totalAmount} USD</span>
                 </div>
 
                 <button
                   className="btn-continue"
                   onClick={handleConfirmBooking}
+                  style={{ marginTop: '1.1rem' }}
                 >
-                  Confirm &amp; Reserve
-                  <Icon icon="mdi:check-circle" width={18} height={18} />
+                  Book via Email Now
+                  <Icon icon="mdi:email-send" width={18} height={18} />
                 </button>
 
                 <button
@@ -1227,12 +1269,12 @@ export function LuxuryBookingModal({
           {step === 3 && (
             <ConfirmationBox>
               <div className="check-icon">
-                <Icon icon="mdi:check" width={38} height={38} />
+                <Icon icon="mdi:email-check" width={38} height={38} />
               </div>
 
-              <h2>Reservation Confirmed!</h2>
+              <h2>Reservation Ready to Send!</h2>
               <p className="lead">
-                Thank you, <strong>{guestName}</strong>. Your stay at <strong>{activeBranch?.name}</strong> has been received and confirmed.
+                Thank you, <strong>{guestName}</strong>. Your reservation details for <strong>{activeBranch?.name}</strong> have been assembled. Please click below to send your booking email directly to Harris Lodge.
               </p>
 
               <div className="voucher-card">
@@ -1250,18 +1292,31 @@ export function LuxuryBookingModal({
                 </div>
                 <div className="summary-line">
                   <span>Check-In &rarr; Check-Out:</span>
-                  <strong>{checkIn} &rarr; {checkOut} ({nights} Nights)</strong>
+                  <strong>{checkIn} &rarr; {checkOut} ({nights} {nights === 1 ? 'Night' : 'Nights'})</strong>
                 </div>
                 <div className="summary-line">
-                  <span>Total Amount (Pay on Arrival):</span>
-                  <strong style={{ color: '#006A56', fontSize: '1.1rem' }}>${totalAmount} USD</strong>
+                  <span>Guests &amp; Breakfast:</span>
+                  <strong>{adults} Adults {childrenCount > 0 ? `, ${childrenCount} Children` : ''} · {addBreakfast ? 'With Breakfast' : 'Room Only'}</strong>
+                </div>
+                <div className="summary-line">
+                  <span>Destination Email:</span>
+                  <strong style={{ color: '#006A56' }}>{BRAND_CONTACT.generalEmail}</strong>
                 </div>
               </div>
 
               <div className="actions-row">
                 <a
+                  href={generateMailtoUrl()}
+                  className="btn-gold"
+                  style={{ background: '#006A56', color: '#ffffff' }}
+                >
+                  <Icon icon="mdi:email-fast-outline" width={18} height={18} />
+                  Send / Open Email Booking
+                </a>
+
+                <a
                   href={`https://wa.me/263775477464?text=${encodeURIComponent(
-                    `Hello Harris Lodge, I have confirmed reservation ${bookingCode} for ${activeRoom.name} at ${activeBranch?.name} from ${checkIn} to ${checkOut}.`
+                    `Hello Harris Lodge, I would like to book reservation ref ${bookingCode} for ${activeRoom.name} at ${activeBranch?.name} from ${checkIn} to ${checkOut} (Guest: ${guestName}).`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"

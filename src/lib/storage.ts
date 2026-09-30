@@ -84,7 +84,7 @@ export const SEED_BRANCHES: Branch[] = [
     address: '77 Romney Park Drive',
     contact_phone: '+263 77 266 7410',
     has_conference: true,
-    conference_rate_per_hour: 9500,
+    conference_rate_per_hour: 9500, 
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   },

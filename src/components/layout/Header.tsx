@@ -997,7 +997,7 @@ export function HeroBanner({
         <HeroBackground aria-hidden="true" />
         <HeroContainer>
           <HeroHeadline>
-            Spend Your Dream<br />Holidays with us
+            Comfort Meets<br />Hospitality
           </HeroHeadline>
           <HeroSubtext>
             Experience exceptional tranquility, refined luxury, and authentic Zimbabwean hospitality

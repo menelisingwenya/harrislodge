@@ -923,10 +923,6 @@ export function BranchDetail({
           </div>
 
           <div className="badge-row">
-            <div className="location-pill">
-              <Icon icon="mdi:map-marker" width={14} height={14} />
-              <span>{activeBranch.location} · BULAWAYO</span>
-            </div>
             <div className="rating-badge">
               <Icon icon="mdi:star" width={16} height={16} style={{ color: '#D97E26' }} />
               <span>{extInfo.rating} ({extInfo.reviewsCount} Google Reviews)</span>

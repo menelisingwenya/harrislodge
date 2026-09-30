@@ -669,7 +669,7 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     priceFormatted: '$40',
     priceUnit: '/ NIGHT',
     status: 'Available',
-    payment: '30% Advanced',
+    payment: 'Direct Booking via Email',
     guestCapacity: '2 Guests',
     beds: '1 Queen Bed',
     description:
@@ -701,7 +701,7 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     priceFormatted: '$60',
     priceUnit: '/ NIGHT',
     status: 'Available',
-    payment: '30% Advanced',
+    payment: 'Direct Booking via Email',
     guestCapacity: '2-3 Guests',
     beds: '1 Master King Bed',
     description:
@@ -733,7 +733,7 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     priceFormatted: '$80',
     priceUnit: '/ NIGHT',
     status: 'Available',
-    payment: '30% Advanced',
+    payment: 'Direct Booking via Email',
     guestCapacity: '3-4 Guests',
     beds: '1 King Bed + Executive Study',
     description:
@@ -766,7 +766,7 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     priceFormatted: '$250',
     priceUnit: '/ HOUR',
     status: 'Available',
-    payment: 'Direct Booking / Corporate Terms',
+    payment: 'Direct Booking via Email',
     guestCapacity: 'Up to 60 Attendees',
     beds: 'Theater / U-Shape / Boardroom Setup',
     description:
@@ -1096,8 +1096,10 @@ export function RoomListing({ onBookRoom, onBookConference, onNavigate }: RoomLi
                     </span>
                   </SpecItem>
                   <SpecItem>
-                    <span className="spec-key">PAYMENT:</span>
-                    <span className="spec-val">{item.payment}</span>
+                    <span className="spec-key">BOOKING:</span>
+                    <span className="spec-val" style={{ color: '#006A56', fontWeight: 600 }}>
+                      {item.payment}
+                    </span>
                   </SpecItem>
                   <SpecItem>
                     <span className="spec-key">GUEST:</span>
