@@ -661,8 +661,8 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     category: 'standard',
     title: 'Standard Room',
     subtitle: 'Impeccably tailored comfort with bespoke furnishings',
-    image: '/images/home/room_standard.jpg',
-    gallery: ['/images/home/room_standard.jpg', '/images/home/welcome_beach.jpg'],
+    image: '/images/harris%20standard.png',
+    gallery: ['/images/harris%20standard.png', '/images/harris%20hero.png'],
     reviewsCount: 14,
     rating: 5,
     price: 40,
@@ -693,8 +693,8 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     category: 'deluxe',
     title: 'Deluxe Room',
     subtitle: 'Premier luxury accommodation with panoramic vistas',
-    image: '/images/home/room_deluxe.jpg',
-    gallery: ['/images/home/room_deluxe.jpg', '/images/home/hero_pool.jpg'],
+    image: '/images/harris%20deluxe.png',
+    gallery: ['/images/harris%20deluxe.png', '/images/harris%20hero.png'],
     reviewsCount: 18,
     rating: 5,
     price: 60,
@@ -725,8 +725,8 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     category: 'executive',
     title: 'Executive Room',
     subtitle: 'Signature VIP residence & private meeting suite',
-    image: '/images/home/room_junior_suite.jpg',
-    gallery: ['/images/home/room_junior_suite.jpg', '/images/home/services_bedroom.jpg'],
+    image: '/images/harris%20room.png',
+    gallery: ['/images/harris%20room.png', '/images/harris%20hero.png'],
     reviewsCount: 22,
     rating: 5,
     price: 80,
@@ -758,8 +758,8 @@ const CURATED_ROOM_ITEMS: RoomDisplayItem[] = [
     category: 'conference',
     title: 'Conference Room',
     subtitle: 'High-Tech Corporate Summit & Banquet Facility',
-    image: '/images/home/conference_hall.jpg',
-    gallery: ['/images/home/conference_hall.jpg', '/images/home/boardroom.jpg'],
+    image: '/images/harris%20conference.png',
+    gallery: ['/images/harris%20conference.png', '/images/harris%20hero.png'],
     reviewsCount: 16,
     rating: 5,
     price: 250,
@@ -1058,7 +1058,7 @@ export function RoomListing({ onBookRoom, onBookConference, onNavigate }: RoomLi
                     backdropFilter: 'blur(4px)',
                   }}
                 >
-                  {item.category.toUpperCase()} TIER
+                  {item.category.toUpperCase()}
                 </div>
               </ImageColumn>
 

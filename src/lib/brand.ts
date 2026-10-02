@@ -4,6 +4,10 @@ export const SOCIAL_LINKS = {
   instagramEntertainment: 'https://www.instagram.com/harris_entertainment_zw/?hl=en',
 } as const;
 
+export const BRAND_ASSETS = {
+  logo: '/images/logo.png',
+} as const;
+
 export const BRAND_CONTACT = {
   centralPhone: '+263 77 266 7410',
   whatsappNumber: '+263 77547 7464',

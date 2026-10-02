@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { useBranch } from '@/context/BranchContext';
-import { BRAND_CONTACT } from '@/lib/brand';
+import { BRAND_ASSETS, BRAND_CONTACT } from '@/lib/brand';
 import type { Room } from '@/types/database';
 
 interface LuxuryBookingModalProps {
@@ -33,7 +33,7 @@ const AVAILABLE_ROOMS: RoomOption[] = [
     category: 'standard',
     name: 'Standard Queen Suite',
     subtitle: 'Classic comfort with serene garden views & modern styling',
-    image: '/images/home/room_standard.jpg',
+    image: '/images/harris%20standard.png',
     pricePerNight: 45,
     bedType: '1 Queen Memory Foam Bed',
     capacity: 'Up to 2 Guests',
@@ -53,7 +53,7 @@ const AVAILABLE_ROOMS: RoomOption[] = [
     category: 'deluxe',
     name: 'Deluxe Executive Suite',
     subtitle: 'Elevated luxury with panoramic terrace & bespoke velvet lounge',
-    image: '/images/home/room_deluxe.jpg',
+    image: '/images/harris%20deluxe.png',
     pricePerNight: 60,
     bedType: '1 Master King Bed',
     capacity: '2 - 3 Guests',
@@ -73,7 +73,7 @@ const AVAILABLE_ROOMS: RoomOption[] = [
     category: 'executive',
     name: 'Presidential Executive Villa',
     subtitle: 'Signature VIP residence with meeting nook & dedicated concierge',
-    image: '/images/home/room_junior_suite.jpg',
+    image: '/images/harris%20room.png',
     pricePerNight: 80,
     bedType: 'Master King + Work Study',
     capacity: '3 - 4 Guests',
@@ -93,7 +93,7 @@ const AVAILABLE_ROOMS: RoomOption[] = [
     category: 'conference',
     name: 'Executive Conference Hall',
     subtitle: 'State-of-the-art corporate summit, banquet & boardroom facility',
-    image: '/images/home/conference_hall.jpg',
+    image: '/images/harris%20conference.png',
     pricePerNight: 250,
     bedType: 'Boardroom / U-Shape / Theater',
     capacity: 'Up to 60 Attendees',
@@ -911,7 +911,7 @@ ${guestName.trim()}`;
       <ModalCard $visible={isOpen} onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <div className="logo-wrap">
-            <img src="/images/logo.png" alt="Harris Lodges Logo" />
+            <img src={BRAND_ASSETS.logo} alt="Harris Lodges Logo" />
             <div className="brand-text">
               <h2>Harris Lodges &amp; Luxury Stays</h2>
               <span>Online Reservation • Direct Email Booking</span>
@@ -1040,7 +1040,6 @@ ${guestName.trim()}`;
                       <RoomCard key={room.id} $selected={isSelected}>
                         <div className="media">
                           <img src={room.image} alt={room.name} />
-                          <span className="badge-tag">{room.size}</span>
                         </div>
 
                         <div className="details">

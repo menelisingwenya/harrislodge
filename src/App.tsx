@@ -4,11 +4,13 @@ import { harrisTheme } from '@/theme';
 import { BranchProvider, useBranch } from '@/context/BranchContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { Header, HeroBanner, BRAND_CONTACT } from '@/components/layout/Header';
+import { BRAND_ASSETS } from '@/lib/brand';
 import { RoomListing } from '@/components/rooms/RoomListing';
 import { BranchDetail } from '@/components/branches/BranchDetail';
 import { ConferenceListing } from '@/components/conference/ConferenceListing';
 import { LuxuryBookingModal } from '@/components/bookings/LuxuryBookingModal';
 import { WhatsAppAssist } from '@/components/common/WhatsAppAssist';
+import { LegalModal, type LegalModalTab } from '@/components/common/LegalModal';
 import type { Room } from '@/types/database';
 import { Icon } from '@iconify/react';
 import styled from 'styled-components';
@@ -892,6 +894,21 @@ const FooterBottom = styled.div`
   gap: 1rem;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
+
+  .footer-legal-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: color ${harrisTheme.transitions.base};
+
+    &:hover {
+      color: #D97E26;
+      text-decoration: underline;
+    }
+  }
 `;
 
 /* ============================================================
@@ -900,28 +917,28 @@ const FooterBottom = styled.div`
 const HOMEPAGE_SHOWCASE_ROOMS = [
   {
     title: 'Standard Room',
-    image: '/images/home/room_standard.jpg',
+    image: '/images/harris%20standard.png',
     description: 'Impeccably tailored comfort with bespoke furnishings, rainfall shower, high-speed Wi-Fi, and serene surroundings.',
     price: '$40',
     tier: 'standard',
   },
   {
     title: 'Deluxe Room',
-    image: '/images/home/room_deluxe.jpg',
+    image: '/images/harris%20deluxe.png',
     description: 'Premier luxury accommodation offering panoramic views, dedicated lounge, deep soaking marble bath, and VIP concierge.',
     price: '$60',
     tier: 'deluxe',
   },
   {
     title: 'Executive Room',
-    image: '/images/home/room_junior_suite.jpg',
+    image: '/images/harris%20room.png',
     description: 'Our signature executive suite with dedicated private work study, lounge seating, VIP concierge access, and marble ensuite.',
     price: '$80',
     tier: 'double_executive',
   },
   {
     title: 'Conference Room',
-    image: '/images/home/conference_hall.jpg',
+    image: '/images/harris%20conference.png',
     description: 'State-of-the-art corporate event & summit facility equipped with 4K laser displays, wireless audio, and dedicated banquet catering.',
     price: '$250',
     tier: 'conference',
@@ -936,9 +953,16 @@ function HarrisLodgeContent() {
   const [bookingDrawerOpen, setBookingDrawerOpen] = useState(false);
   const [selectedRoomForBooking, setSelectedRoomForBooking] = useState<Room | null>(null);
   const [bookingPrefillDates, setBookingPrefillDates] = useState<{ checkIn?: string; checkOut?: string }>({});
+  const [legalModalOpen, setLegalModalOpen] = useState(false);
+  const [legalModalTab, setLegalModalTab] = useState<LegalModalTab>('privacy');
   const { branches, currentBranch, currentBranchRooms, setCurrentBranchById } = useBranch();
   const [selectedMapBranchId, setSelectedMapBranchId] = useState<string>('branch-northend');
   const activeMapBranch = branches.find((b) => b.id === selectedMapBranchId) || branches[0];
+
+  const handleOpenLegal = (tab: LegalModalTab) => {
+    setLegalModalTab(tab);
+    setLegalModalOpen(true);
+  };
 
   const handleOpenBooking = (room?: Room | null) => {
     setSelectedRoomForBooking(room ?? null);
@@ -992,16 +1016,16 @@ function HarrisLodgeContent() {
               <WelcomeImageGrid>
                 <div className="img-card tall">
                   <img
-                    src="/images/home/welcome_villa.jpg"
-                    alt="Harris Lodge Resort Villa Patio and Gardens"
+                    src="/images/harris%20executive%20hero.png"
+                    alt="Harris Lodge Executive Hero"
                     loading="lazy"
                     decoding="async"
                   />
                 </div>
                 <div className="img-card offset">
                   <img
-                    src="/images/home/welcome_beach.jpg"
-                    alt="Luxury Holiday Stays Terrace"
+                    src="/images/harris%20ceo.png"
+                    alt="Harris Lodge CEO"
                     loading="lazy"
                     decoding="async"
                   />
@@ -1090,7 +1114,7 @@ function HarrisLodgeContent() {
             <ServicesContainer>
               <ServicesAmbientImage>
                 <img
-                  src="/images/home/services_bedroom.jpg"
+                  src="/images/harris%20deluxe.png"
                   alt="Luxury Suite Interiors at Harris Lodges"
                   loading="lazy"
                   decoding="async"
@@ -1168,7 +1192,7 @@ function HarrisLodgeContent() {
                       >
                         <div className="hotel-logo-box">
                           <img
-                            src="/images/logo.png"
+                            src={BRAND_ASSETS.logo}
                             alt={hotel.fullName}
                             loading="lazy"
                             decoding="async"
@@ -1326,7 +1350,7 @@ function HarrisLodgeContent() {
                       >
                         <div className="hotel-logo-box">
                           <img
-                            src="/images/logo.png"
+                            src={BRAND_ASSETS.logo}
                             alt={hotel.fullName}
                             loading="lazy"
                             decoding="async"
@@ -1368,7 +1392,7 @@ function HarrisLodgeContent() {
       {/* About Tab View */}
       {currentSection === 'about' && (
         <main style={{ padding: '0 0 6rem', width: '100%' }}>
-          <PageHeroSection $bgImage="/images/home/welcome_villa.jpg">
+          <PageHeroSection $bgImage="/images/harris%20hero.png">
             <div className="hero-content">
               <h1>About Harris Lodges</h1>
               <div className="breadcrumbs">
@@ -1384,10 +1408,10 @@ function HarrisLodgeContent() {
               <WelcomeContainer>
                 <WelcomeImageGrid>
                   <div className="img-card tall">
-                    <img src="/images/home/welcome_villa.jpg" alt="Harris Lodge Resort Villa" loading="lazy" decoding="async" />
+                    <img src="/images/harris%20executive%20hero.png" alt="Harris Lodge Executive Hero" loading="lazy" decoding="async" />
                   </div>
                   <div className="img-card offset">
-                    <img src="/images/home/welcome_beach.jpg" alt="Harris Lodge Sunset Terrace" loading="lazy" decoding="async" />
+                    <img src="/images/harris%20ceo.png" alt="Harris Lodge CEO" loading="lazy" decoding="async" />
                   </div>
                 </WelcomeImageGrid>
                 <WelcomeContent>
@@ -1424,7 +1448,7 @@ function HarrisLodgeContent() {
                         >
                           <div className="hotel-logo-box">
                             <img
-                              src="/images/logo.png"
+                              src={BRAND_ASSETS.logo}
                               alt={hotel.fullName}
                               loading="lazy"
                               decoding="async"
@@ -1533,7 +1557,7 @@ function HarrisLodgeContent() {
       {/* Contact Tab View */}
       {currentSection === 'contact' && (
         <main style={{ padding: '0 0 6rem', width: '100%' }}>
-          <PageHeroSection $bgImage="/images/home/welcome_beach.jpg">
+          <PageHeroSection $bgImage="/images/harris%20deluxe.png">
             <div className="hero-content">
               <h1>Contact Harris Lodge</h1>
               <div className="breadcrumbs">
@@ -1806,7 +1830,7 @@ function HarrisLodgeContent() {
       {/* News & Events Tab View */}
       {currentSection === 'news' && (
         <main style={{ padding: '0 0 6rem', width: '100%' }}>
-          <PageHeroSection $bgImage="/images/home/conference_hall.jpg">
+          <PageHeroSection $bgImage="/images/harris%20conference.png">
             <div className="hero-content">
               <span className="eyebrow">STORIES, EVENTS &amp; PRESS</span>
               <h1>News &amp; Happenings</h1>
@@ -1929,7 +1953,7 @@ function HarrisLodgeContent() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
             <div style={{ background: '#FFFFFF', border: '1px solid rgba(0, 106, 86, 0.1)', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0, 106, 86, 0.05)' }}>
               <div style={{ height: 200, overflow: 'hidden' }}>
-                <img src="/images/home/welcome_villa.jpg" alt="Villa story" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/images/harris%20hero.png" alt="Villa story" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '1.5rem' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#D97E26', textTransform: 'uppercase', letterSpacing: '0.08em' }}>JOURNAL &amp; STORIES</span>
@@ -1947,7 +1971,7 @@ function HarrisLodgeContent() {
 
             <div style={{ background: '#FFFFFF', border: '1px solid rgba(0, 106, 86, 0.1)', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0, 106, 86, 0.05)' }}>
               <div style={{ height: 200, overflow: 'hidden' }}>
-                <img src="/images/home/conference_hall.jpg" alt="Events Calendar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/images/harris%20conference.png" alt="Events Calendar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '1.5rem' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#D97E26', textTransform: 'uppercase', letterSpacing: '0.08em' }}>EVENTS CALENDAR</span>
@@ -1965,7 +1989,7 @@ function HarrisLodgeContent() {
 
             <div style={{ background: '#FFFFFF', border: '1px solid rgba(0, 106, 86, 0.1)', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0, 106, 86, 0.05)' }}>
               <div style={{ height: 200, overflow: 'hidden' }}>
-                <img src="/images/home/room_deluxe.jpg" alt="Press Release" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/images/harris%20deluxe.png" alt="Press Release" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '1.5rem' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#D97E26', textTransform: 'uppercase', letterSpacing: '0.08em' }}>PRESS RELEASES</span>
@@ -1991,7 +2015,7 @@ function HarrisLodgeContent() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.25rem' }}>
               <img
-                src="/images/logo.png"
+                src={BRAND_ASSETS.logo}
                 alt="Harris Lodge - Group of Hotels & Lodges"
                 style={{ height: 56, width: 'auto', borderRadius: 4, background: '#FFFFFF', padding: '6px 12px' }}
               />
@@ -2199,10 +2223,16 @@ function HarrisLodgeContent() {
 
         <FooterBottom>
           <div>&copy; {new Date().getFullYear()} Harris Group of Hotels &amp; Lodges. All rights reserved.</div>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <span>Privacy Policy</span>
-            <span>Terms &amp; Conditions</span>
-            <span>Harris Hotel Management Engine</span>
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+            <button className="footer-legal-btn" onClick={() => handleOpenLegal('privacy')}>
+              Privacy Policy
+            </button>
+            <button className="footer-legal-btn" onClick={() => handleOpenLegal('terms')}>
+              Terms &amp; Conditions
+            </button>
+            <button className="footer-legal-btn" onClick={() => handleOpenLegal('management')}>
+              Harris Hotel Management Engine
+            </button>
           </div>
         </FooterBottom>
       </LuxuryFooter>
@@ -2221,6 +2251,14 @@ function HarrisLodgeContent() {
 
       {/* 5. Floating WhatsApp Concierge Assistant */}
       <WhatsAppAssist />
+
+      {/* 6. Legal & Policy Governance Modal */}
+      <LegalModal
+        isOpen={legalModalOpen}
+        activeTab={legalModalTab}
+        onClose={() => setLegalModalOpen(false)}
+        onSelectTab={(tab) => setLegalModalTab(tab)}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { harrisTheme } from '@/theme';
 import { useBranch } from '@/context/BranchContext';
 import { Icon } from '@iconify/react';
-import { BRAND_CONTACT } from '@/lib/brand';
+import { BRAND_ASSETS, BRAND_CONTACT } from '@/lib/brand';
 import { useState, useEffect } from 'react';
 
 /* ============================================================
@@ -386,7 +386,7 @@ const HeroBackground = styled.div`
       rgba(0, 106, 86, 0.5) 50%,
       rgba(0, 106, 86, 0.18) 100%
     ),
-    url('/images/home/hero_pool.jpg');
+    url('/images/harris%20hero.png');
   background-size: cover;
   background-position: center right;
   z-index: 1;
@@ -695,7 +695,7 @@ export function Header({
             title="Harris Lodge - Back to Home"
           >
             <img
-              src="/images/logo.png"
+              src={BRAND_ASSETS.logo}
               alt="Harris Lodge - Group of Hotels & Lodges"
               className="logo-img"
             />
@@ -856,7 +856,7 @@ export function Header({
       <MobileDrawer $open={mobileOpen}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <BrandLogo onClick={() => { onNavigate?.('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); setMobileOpen(false); }}>
-            <img src="/images/logo.png" alt="Harris Lodge Logo" className="logo-img" style={{ height: 46 }} />
+            <img src={BRAND_ASSETS.logo} alt="Harris Lodge Logo" className="logo-img" style={{ height: 46 }} />
           </BrandLogo>
           <button onClick={() => setMobileOpen(false)} aria-label="Close mobile menu" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#002921' }}>
             <Icon icon="mdi:close" width={24} height={24} />
