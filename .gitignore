@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+*.zip
+hostinger-deploy.zip
 
 # Editor directories and files
 .vscode/*

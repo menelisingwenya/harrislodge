@@ -1,4 +1,19 @@
+# Robots.txt for Harris Group of Hotels & Lodges (https://harrislodge.co.zw/)
 User-agent: *
 Allow: /
 
+# Sitemaps
 Sitemap: https://harrislodge.co.zw/sitemap.xml
+
+# Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /

@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { harrisTheme } from '@/theme';
 import { BranchProvider, useBranch } from '@/context/BranchContext';
@@ -8,14 +8,14 @@ import { BRAND_ASSETS } from '@/lib/brand';
 import { RoomListing } from '@/components/rooms/RoomListing';
 import { BranchDetail } from '@/components/branches/BranchDetail';
 import { ConferenceListing } from '@/components/conference/ConferenceListing';
-import { LuxuryBookingModal } from '@/components/bookings/LuxuryBookingModal';
+import { BookingPage } from '@/components/bookings/BookingPage';
 import { WhatsAppAssist } from '@/components/common/WhatsAppAssist';
 import { LegalModal, type LegalModalTab } from '@/components/common/LegalModal';
 import type { Room } from '@/types/database';
 import { Icon } from '@iconify/react';
 import styled from 'styled-components';
 
-type SectionName = 'home' | 'rooms' | 'branches' | 'conference' | 'services' | 'about' | 'contact' | 'news';
+type SectionName = 'home' | 'rooms' | 'branches' | 'conference' | 'services' | 'about' | 'contact' | 'news' | 'booking';
 
 /* ============================================================
    PAGE LAYOUT & SECTION STYLES
@@ -950,14 +950,51 @@ const HOMEPAGE_SHOWCASE_ROOMS = [
    ============================================================ */
 function HarrisLodgeContent() {
   const [currentSection, setCurrentSection] = useState<SectionName>('home');
-  const [bookingDrawerOpen, setBookingDrawerOpen] = useState(false);
   const [selectedRoomForBooking, setSelectedRoomForBooking] = useState<Room | null>(null);
-  const [bookingPrefillDates, setBookingPrefillDates] = useState<{ checkIn?: string; checkOut?: string }>({});
+  const [bookingPrefillDates, setBookingPrefillDates] = useState<{
+    checkIn?: string;
+    checkOut?: string;
+    adults?: number;
+    children?: number;
+    branchId?: string;
+  }>({});
   const [legalModalOpen, setLegalModalOpen] = useState(false);
   const [legalModalTab, setLegalModalTab] = useState<LegalModalTab>('privacy');
   const { branches, currentBranch, currentBranchRooms, setCurrentBranchById } = useBranch();
   const [selectedMapBranchId, setSelectedMapBranchId] = useState<string>('branch-northend');
   const activeMapBranch = branches.find((b) => b.id === selectedMapBranchId) || branches[0];
+
+  useEffect(() => {
+    const titles: Record<SectionName, string> = {
+      home: 'Harris Lodges Zimbabwe | Luxury Accommodations & Conference Venues Bulawayo',
+      rooms: 'Suites & Rooms | Harris Lodges Zimbabwe — Best Rates Direct',
+      booking: 'Reserve Your Stay | Direct WhatsApp & Email Booking — Harris Lodges',
+      branches: '12 Branch Locations in Bulawayo | Harris Group of Hotels & Lodges',
+      conference: 'Corporate Conference & Event Facilities Bulawayo | Harris Lodges',
+      services: 'Guest Services, Amenities & Hospitality | Harris Lodges',
+      about: 'About Harris Lodges | Heritage & Hospitality in Zimbabwe',
+      contact: 'Contact & Locations | Harris Lodges Bulawayo, Zimbabwe',
+      news: 'News, Events & Stories | Harris Lodges Zimbabwe',
+    };
+
+    const descriptions: Record<SectionName, string> = {
+      home: 'Discover Harris Group of Hotels & Lodges. Refined boutique comfort, executive suites, tranquil gardens, and high-tech conference venues across 12 premier branches in Bulawayo, Zimbabwe.',
+      rooms: 'Explore luxury suites and boutique rooms at Harris Lodges. Standard, Deluxe, and Executive Villas available with fiber Wi-Fi, air conditioning, and room service.',
+      booking: 'Reserve your stay directly with Harris Lodges via WhatsApp or Email. No credit card required. Instant confirmation and best rates guaranteed.',
+      branches: 'Find all 12 Harris Lodge locations in Bulawayo, Zimbabwe including Northend, Sunone, Prime, Zim Harris, Clark, and Romney Park.',
+      conference: 'Host corporate meetings, banquets, and executive boardrooms at Harris Lodges with 4K laser projection, Polycom sound, and full catering.',
+      services: 'Enjoy comprehensive guest amenities: high-speed Wi-Fi, 24/7 front desk, airport transfers, serene gardens, and self-catering facilities.',
+      about: 'Learn about Harris Group of Hotels & Lodges, our rich Zimbabwean heritage, hospitality philosophy, and commitment to excellence.',
+      contact: 'Get in touch with Harris Lodges headquarters and branch reception desks in Bulawayo. Phone numbers, WhatsApp, and Google Maps directions.',
+      news: 'Latest news, press releases, city guides, and upcoming events from Harris Group of Hotels & Lodges in Zimbabwe.',
+    };
+
+    document.title = titles[currentSection] || titles.home;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', descriptions[currentSection] || descriptions.home);
+    }
+  }, [currentSection]);
 
   const handleOpenLegal = (tab: LegalModalTab) => {
     setLegalModalTab(tab);
@@ -966,7 +1003,8 @@ function HarrisLodgeContent() {
 
   const handleOpenBooking = (room?: Room | null) => {
     setSelectedRoomForBooking(room ?? null);
-    setBookingDrawerOpen(true);
+    setCurrentSection('booking');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAvailabilitySearch = (params: {
@@ -976,8 +1014,15 @@ function HarrisLodgeContent() {
     children: number;
     branchId: string;
   }) => {
-    setBookingPrefillDates({ checkIn: params.checkIn, checkOut: params.checkOut });
-    setBookingDrawerOpen(true);
+    setBookingPrefillDates({
+      checkIn: params.checkIn,
+      checkOut: params.checkOut,
+      adults: params.adults,
+      children: params.children,
+      branchId: params.branchId,
+    });
+    setCurrentSection('booking');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleShowcaseRoomClick = (roomIndex: number) => {
@@ -1238,10 +1283,10 @@ function HarrisLodgeContent() {
             onBookRoom={(room) => handleOpenBooking(room)}
             onBookConference={() => {
               setSelectedRoomForBooking(null);
-              setBookingDrawerOpen(true);
+              handleOpenBooking();
             }}
             onNavigate={(section) => {
-              setCurrentSection(section);
+              setCurrentSection(section as SectionName);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
@@ -1257,7 +1302,7 @@ function HarrisLodgeContent() {
             onBookConference={(bId) => {
               if (bId) setCurrentBranchById(bId);
               setSelectedRoomForBooking(null);
-              setBookingDrawerOpen(true);
+              handleOpenBooking();
             }}
             onNavigateHome={() => {
               setCurrentSection('home');
@@ -2009,6 +2054,22 @@ function HarrisLodgeContent() {
       </main>
     )}
 
+      {/* Booking Page View */}
+      {currentSection === 'booking' && (
+        <BookingPage
+          preselectedRoom={selectedRoomForBooking}
+          initialDates={bookingPrefillDates}
+          onNavigateHome={() => {
+            setCurrentSection('home');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onNavigateSection={(section) => {
+            setCurrentSection(section as SectionName);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
+
       {/* 3. Luxury Footer */}
       <LuxuryFooter>
         <FooterGrid>
@@ -2237,17 +2298,6 @@ function HarrisLodgeContent() {
         </FooterBottom>
       </LuxuryFooter>
 
-      {/* 4. Luxury Native Booking Engine Modal */}
-      <LuxuryBookingModal
-        isOpen={bookingDrawerOpen}
-        onClose={() => {
-          setBookingDrawerOpen(false);
-          setSelectedRoomForBooking(null);
-        }}
-        initialDates={bookingPrefillDates}
-        initialBranchId={currentBranch?.id}
-        preselectedRoom={selectedRoomForBooking}
-      />
 
       {/* 5. Floating WhatsApp Concierge Assistant */}
       <WhatsAppAssist />

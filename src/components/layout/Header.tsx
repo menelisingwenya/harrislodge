@@ -158,10 +158,21 @@ const BrandLogo = styled.a`
   }
 `;
 
+const NavRightGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  margin-left: auto;
+
+  @media (max-width: 1080px) {
+    gap: 0.75rem;
+  }
+`;
+
 const NavLinks = styled.nav`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 
   @media (max-width: 1080px) {
     display: none;
@@ -186,8 +197,9 @@ const NavDropdownWrapper = styled.div`
 `;
 
 const NavLinkItem = styled.button<{ $active?: boolean }>`
-  padding: 0.5rem 0.85rem;
-  font-size: 0.88rem;
+  padding: 0 0.85rem;
+  height: 40px;
+  font-size: 0.9rem;
   font-weight: ${(p) => (p.$active ? '600' : '500')};
   color: ${(p) => (p.$active ? '#006A56' : '#1e293b')};
   position: relative;
@@ -199,6 +211,7 @@ const NavLinkItem = styled.button<{ $active?: boolean }>`
   background: transparent;
   border: none;
   cursor: pointer;
+  white-space: nowrap;
 
   .nav-chevron {
     transition: transform 200ms ease;
@@ -208,14 +221,15 @@ const NavLinkItem = styled.button<{ $active?: boolean }>`
   &::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -2px;
     left: 0.85rem;
     right: 0.85rem;
-    height: 2px;
+    height: 2.5px;
     background: ${(p) => (p.$active ? '#006A56' : '#D97E26')};
     transform: scaleX(${(p) => (p.$active ? 1 : 0)});
     transform-origin: center;
     transition: transform 200ms ease;
+    border-radius: 2px;
   }
 
   &:hover {
@@ -276,17 +290,23 @@ const DropdownItem = styled.button`
   }
 `;
 
-const ContactPillBtn = styled.button`
-  background: transparent;
-  color: #002921;
-  border: 1.5px solid #002921;
-  padding: 0.55rem 1.6rem;
+const ContactPillBtn = styled.button<{ $active?: boolean }>`
+  background: ${(p) => (p.$active ? '#006A56' : 'transparent')};
+  color: ${(p) => (p.$active ? '#FFFFFF' : '#002921')};
+  border: 1.5px solid ${(p) => (p.$active ? '#006A56' : '#002921')};
+  padding: 0 1.4rem;
+  height: 40px;
+  box-sizing: border-box;
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   border-radius: 9999px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   transition: all 200ms ease;
 
   &:hover {
@@ -296,25 +316,36 @@ const ContactPillBtn = styled.button`
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 106, 86, 0.25);
   }
+
+  @media (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const NavActions = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 `;
 
-const BookNowBtn = styled.button`
-  background: #D97E26;
+const BookNowBtn = styled.button<{ $active?: boolean }>`
+  background: ${(p) => (p.$active ? '#006A56' : '#D97E26')};
   color: #FFFFFF;
-  padding: 0.65rem 1.6rem;
-  font-size: 0.8rem;
+  padding: 0 1.4rem;
+  height: 40px;
+  box-sizing: border-box;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  border-radius: 2px;
+  border-radius: 9999px;
   border: none;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap;
   transition: all ${harrisTheme.transitions.base};
 
   &:hover {
@@ -573,7 +604,7 @@ const CheckAvailBtn = styled.button`
 /* ============================================================
    MAIN EXPORT: HEADER
    ============================================================ */
-export type NavSectionName = 'home' | 'rooms' | 'branches' | 'conference' | 'services' | 'about' | 'contact' | 'news';
+export type NavSectionName = 'home' | 'rooms' | 'branches' | 'conference' | 'services' | 'about' | 'contact' | 'news' | 'booking';
 
 export interface HeaderProps {
   currentSection?: NavSectionName;
@@ -701,143 +732,159 @@ export function Header({
             />
           </BrandLogo>
 
-          <NavLinks>
-            <NavLinkItem
-              $active={currentSection === 'home'}
-              onClick={() => {
-                onNavigate?.('home');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              Home
-            </NavLinkItem>
-
-            {/* Rooms & Suites Dropdown */}
-            <NavDropdownWrapper>
+          <NavRightGroup>
+            <NavLinks>
               <NavLinkItem
-                $active={currentSection === 'rooms'}
+                $active={currentSection === 'home'}
                 onClick={() => {
-                  onNavigate?.('rooms');
+                  onNavigate?.('home');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
-                Rooms &amp; Suites
-                <Icon icon="mdi:chevron-down" width={16} height={16} className="nav-chevron" />
+                Home
               </NavLinkItem>
 
-              <DropdownMenu className="dropdown-menu">
-                <DropdownItem
+              {/* Rooms & Suites Dropdown */}
+              <NavDropdownWrapper>
+                <NavLinkItem
+                  $active={currentSection === 'rooms'}
                   onClick={() => {
                     onNavigate?.('rooms');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 >
-                  <span>All Rooms &amp; Suites</span>
-                  <Icon icon="mdi:arrow-right" width={14} height={14} style={{ color: '#D97E26' }} />
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('rooms');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Standard Room</span>
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('rooms');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Deluxe Room</span>
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('rooms');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Executive Room</span>
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('conference');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Conference Rooms</span>
-                </DropdownItem>
-              </DropdownMenu>
-            </NavDropdownWrapper>
+                  Rooms &amp; Suites
+                  <Icon icon="mdi:chevron-down" width={16} height={16} className="nav-chevron" />
+                </NavLinkItem>
 
-            {/* News Dropdown (Screenshot Accurate) */}
-            <NavDropdownWrapper>
+                <DropdownMenu className="dropdown-menu">
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('rooms');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>All Rooms &amp; Suites</span>
+                    <Icon icon="mdi:arrow-right" width={14} height={14} style={{ color: '#D97E26' }} />
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('rooms');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Standard Room</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('rooms');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Deluxe Room</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('rooms');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Executive Room</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('conference');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Conference Rooms</span>
+                  </DropdownItem>
+                </DropdownMenu>
+              </NavDropdownWrapper>
+
+              {/* News Dropdown */}
+              <NavDropdownWrapper>
+                <NavLinkItem
+                  $active={currentSection === 'news'}
+                  onClick={() => {
+                    onNavigate?.('news');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  News
+                  <Icon icon="mdi:chevron-down" width={16} height={16} className="nav-chevron" />
+                </NavLinkItem>
+
+                <DropdownMenu className="dropdown-menu">
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('news');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Journal &amp; Stories</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('news');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Events Calendar</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      onNavigate?.('news');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    <span>Press Releases</span>
+                  </DropdownItem>
+                </DropdownMenu>
+              </NavDropdownWrapper>
+
+              {/* About Us */}
               <NavLinkItem
-                $active={currentSection === 'news'}
+                $active={currentSection === 'about'}
                 onClick={() => {
-                  onNavigate?.('news');
+                  onNavigate?.('about');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
-                News
-                <Icon icon="mdi:chevron-down" width={16} height={16} className="nav-chevron" />
+                About Us
               </NavLinkItem>
+            </NavLinks>
 
-              <DropdownMenu className="dropdown-menu">
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('news');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Journal &amp; Stories</span>
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('news');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Events Calendar</span>
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    onNavigate?.('news');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <span>Press Releases</span>
-                </DropdownItem>
-              </DropdownMenu>
-            </NavDropdownWrapper>
+            <NavActions>
+              {/* Contact Pill Button */}
+              <ContactPillBtn
+                $active={currentSection === 'contact'}
+                onClick={() => {
+                  onNavigate?.('contact');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                CONTACT
+              </ContactPillBtn>
 
-            {/* About Us */}
-            <NavLinkItem
-              $active={currentSection === 'about'}
-              onClick={() => {
-                onNavigate?.('about');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              About Us
-            </NavLinkItem>
+              {/* Book Now Button */}
+              <BookNowBtn
+                $active={currentSection === 'booking'}
+                onClick={() => {
+                  onNavigate?.('booking');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                title="Book your stay at Harris Lodges"
+              >
+                <Icon icon="mdi:calendar-check" width={16} height={16} />
+                <span>BOOK NOW</span>
+              </BookNowBtn>
 
-            {/* Contact Pill Button */}
-            <ContactPillBtn
-              onClick={() => {
-                onNavigate?.('contact');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              CONTACT
-            </ContactPillBtn>
-          </NavLinks>
-
-          <NavActions>
-            <MobileMenuBtn onClick={() => setMobileOpen(true)} aria-label="Open mobile menu">
-              <Icon icon="mdi:menu" width={26} height={26} />
-            </MobileMenuBtn>
-          </NavActions>
+              <MobileMenuBtn onClick={() => setMobileOpen(true)} aria-label="Open mobile menu">
+                <Icon icon="mdi:menu" width={26} height={26} />
+              </MobileMenuBtn>
+            </NavActions>
+          </NavRightGroup>
         </MainNavInner>
       </MainNavRoot>
 
@@ -925,8 +972,21 @@ export function Header({
           </a>
         </div>
 
-        <BookNowBtn onClick={() => { onOpenBookingDrawer?.(); setMobileOpen(false); }} style={{ width: '100%', textAlign: 'center', padding: '0.85rem' }}>
-          Book Now
+        <BookNowBtn
+          $active={currentSection === 'booking'}
+          onClick={() => {
+            if (onNavigate) {
+              onNavigate('booking');
+            } else {
+              onOpenBookingDrawer?.();
+            }
+            setMobileOpen(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          style={{ width: '100%', textAlign: 'center', justifyContent: 'center', padding: '0.85rem' }}
+        >
+          <Icon icon="mdi:calendar-check" width={18} height={18} />
+          <span>Book Now</span>
         </BookNowBtn>
       </MobileDrawer>
     </>
